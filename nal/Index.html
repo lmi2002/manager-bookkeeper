@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      
+      input{
+        width: 70%;
+      }
+      
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 10px; /* Положение от правого края */
+       }
+      
+    
+    </style>
+  </head>
+  <body>
+  
+    <p>
+      <input placeholder="Введите дату оплаты счета" type="text" id="input">
+    </p>
+  
+    <p>
+      <select id="select">        
+        <option value="koroedov">Короедов Владислав</option>
+        <option value="gordeev">Гордеев Родион</option>
+      </select>
+    </p>
+     
+    <hr/>
+    
+    <p class="layer1">  
+      <button onmouseup="executeDia()">Провести Оплату</button>
+    </p>
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Отмена</button>
+    </p>
+    
+    <script>
+  
+      window.executeDia = function() {
+        let person = select.value
+        let date = input.value
+        google.script.run.Payment(person, date);
+        google.script.host.close();
+       };
+     
+      window.closeDia = function() {
+        google.script.host.close()
+      };
+    </script>
+  </body>
+</html>

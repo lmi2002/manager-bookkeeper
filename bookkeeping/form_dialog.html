@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      
+      input{
+        width: 70%;
+      }    
+      
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 10px; /* Положение от правого края */
+       }
+      
+    
+    </style>
+  </head>
+  <body>
+   
+   <p id="code" ><b><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b> &nbsp <span id="beznal" ><b><?= getObjSpreadsheetApp()['values_list'][0][3]  + " грн" ?></b></span></p>
+   
+   
+  
+   <p id="contragent" class="p-value"><?= getObjSpreadsheetApp()['values_list'][0][5] ?></p>
+
+   
+    <p>
+      <label for="bday">Введите дату счета:</label>
+      <input type="date" id="input" value=<?= getStrNowDay()?>>
+    </p>
+    
+    
+    
+    <p class="layer1">  
+      <button onmouseup="executeDia()">Выставить</button>
+    </p>
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Отмена</button>
+    </p>
+    
+    <script>
+    
+      window.executeDia = function() {
+        let date = input.value
+        google.script.run.Invoice(date);
+        google.script.host.close();
+       };
+     
+      window.closeDia = function() {
+        google.script.host.close()
+      };
+    </script>
+  </body>
+</html>

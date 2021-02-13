@@ -1,7 +1,5 @@
 //Настраивать Google Table Файл -> Настройки таблицы Часовой пояс (GMT+02:00)Moscow-01-Kaliningrad
 
-ID_TEMPLATE_INVOICE = '1itCGutOfx-fvyGK970oZT9jdZeF9kcMh-vD0WX2EuF4'
-
 function onOpen() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
   var entries = 

@@ -21,42 +21,56 @@
       
     
     </style>
+
   </head>
+
+
   <body>
    
    <p id="code" ><b><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b> &nbsp <span id="beznal" ><b><?= getObjSpreadsheetApp()['values_list'][0][3]  + " грн" ?></b></span></p>
-   
-   
   
    <p id="contragent" class="p-value"><?= getObjSpreadsheetApp()['values_list'][0][5] ?></p>
 
    
     <p>
-      <label for="bday">Введите дату счета:</label>
+      <label for="bday">Введите дату счёта:</label>
       <input type="date" id="input" value=<?= getStrNowDay()?>>
     </p>
     
     
     
     <p class="layer1">  
-      <button onmouseup="executeDia()">Выставить</button>
+      <input id="execute" type="button" value="Выставить" style="width: 100px;">
     </p>
     
     <p class="layer2">
       <button onmouseup="closeDia()">Отмена</button>
     </p>
     
-    <script>
-    
-      window.executeDia = function() {
-        let date = input.value
-        google.script.run.Invoice(date);
-        google.script.host.close();
-       };
-     
-      window.closeDia = function() {
-        google.script.host.close()
-      };
-    </script>
+
   </body>
+
+  <script>
+ 
+    function executeDia() {
+        var date = input.value
+        google.script.run.Invoice(date)
+    }
+
+    function closeForm() {
+      setTimeout(function() {
+        google.script.host.close()
+      }, 1500)
+    }
+    
+    execute.onclick = function() {
+         executeDia()
+         closeForm()
+    }  
+   
+    window.closeDia = function() {
+      google.script.host.close()
+    };
+
+    </script>
 </html>

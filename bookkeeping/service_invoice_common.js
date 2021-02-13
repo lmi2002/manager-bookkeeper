@@ -3,19 +3,16 @@ function moveFiles(dict, date) {
   var date = date
   var year = Utilities.formatDate(new Date(date), "GMT", "yyyy")
   var month = Utilities.formatDate(new Date(date), "GMT", "MM")
-  var file = DriveApp.getFileById(dict['id']);
   var folder_name = 'Счета ' + getTextMonth(month, 'folder') + " " + year
   var folder = getFolders(folder_name)
   
   if (!folder) {
     folder = DriveApp.createFolder(folder_name)
   }
-  file.moveTo(folder)
-  return {
-          "file":file,
-          "invoice_num": dict['invoice_num'],
-          "email": dict['email']
-         }
+  dict['file'].moveTo(folder)
+  return dict
+          
+         
 }
 
 function getTextMonth(month, str_doc) {
@@ -73,7 +70,7 @@ function getTextMonth(month, str_doc) {
   return str_month[month][str_doc]
 }
 
-function saveInvoiceFormatXlsx(date) {
+function copyInvoiceFile(date) {
   
   var new_date = new Date(date)
   
@@ -102,7 +99,7 @@ function saveInvoiceFormatXlsx(date) {
     
   SpreadsheetApp.flush()
   return {
-          "id": ss_copy_invoice.getId(),
+          'ss': ss_copy_invoice,
           "invoice_num": 'Рахунок № ' + code + "/" + dd_mm,
           "email": email,
           "contract_str": contract_str
@@ -124,7 +121,7 @@ function getFolders(folderName) {
 function sendInvoiceToEmail(dict) {
 
   GmailApp.sendEmail(dict['email'],"Бытовки Харьков " + dict['invoice_num'], 'Пожалуйста посмотрите прикрепленный файл.', {
-    attachments: [dict['file'].getAs('application/pdf')],
+    attachments: [dict['ss'].getAs('application/pdf')],
     htmlBody: getLetterBody(),
     name: 'Бытовки Харьков'
     })
@@ -145,3 +142,40 @@ function getObjSpreadsheetApp() {
   }
 }
 
+function exportSpreadsheetToXlsx(dict, type) {
+  /* globals __SNIPPETS__TYPES__EXPORT__SHEET__ */
+  const type_ = __SNIPPETS__TYPES__EXPORT__SHEET__[type];
+  const url = Drive.Files.get(dict['ss'].getId()).exportLinks[type_];
+  const blob = UrlFetchApp.fetch(url, {
+    headers: {
+      Authorization: 'Bearer ' + ScriptApp.getOAuthToken(),
+    },
+  })
+  var file = DriveApp.createFile(blob).setName(dict['ss'].getName())
+  DriveApp.getFileById(dict['ss'].getId()).setTrashed(true)
+  dict['file'] = file
+  return dict
+}
+
+
+(function(scope) {
+  const TYPES = {
+    'application/x-vnd.oasis.opendocument.spreadsheet':
+      'application/x-vnd.oasis.opendocument.spreadsheet',
+    'application/vnd.oasis.opendocument.spreadsheet':
+      'application/vnd.oasis.opendocument.spreadsheet',
+    ods: 'application/x-vnd.oasis.opendocument.spreadsheet',
+    'text/tab-separated-values': 'text/tab-separated-values',
+    tsv: 'text/tab-separated-values',
+    'application/pdf': 'application/pdf',
+    pdf: 'application/pdf',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/csv': 'text/csv',
+    csv: 'text/csv',
+    'application/zip': 'application/zip',
+    zip: 'application/zip',
+  };
+  scope.__SNIPPETS__TYPES__EXPORT__SHEET__ = TYPES;
+})(this);

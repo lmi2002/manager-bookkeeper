@@ -151,7 +151,7 @@ function exportSpreadsheetToXlsx(dict, type) {
       Authorization: 'Bearer ' + ScriptApp.getOAuthToken(),
     },
   })
-  var file = DriveApp.createFile(blob).setName(dict['ss'].getName())
+  var file = DriveApp.createFile(blob).setName(dict['ss'].getName() + '.' + type)
   DriveApp.getFileById(dict['ss'].getId()).setTrashed(true)
   dict['file'] = file
   return dict
@@ -164,18 +164,18 @@ function exportSpreadsheetToXlsx(dict, type) {
       'application/x-vnd.oasis.opendocument.spreadsheet',
     'application/vnd.oasis.opendocument.spreadsheet':
       'application/vnd.oasis.opendocument.spreadsheet',
-    ods: 'application/x-vnd.oasis.opendocument.spreadsheet',
+    'ods': 'application/x-vnd.oasis.opendocument.spreadsheet',
     'text/tab-separated-values': 'text/tab-separated-values',
-    tsv: 'text/tab-separated-values',
+    'tsv': 'text/tab-separated-values',
     'application/pdf': 'application/pdf',
-    pdf: 'application/pdf',
+    'pdf': 'application/pdf',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/csv': 'text/csv',
-    csv: 'text/csv',
+    'csv': 'text/csv',
     'application/zip': 'application/zip',
-    zip: 'application/zip',
+    'zip': 'application/zip',
   };
   scope.__SNIPPETS__TYPES__EXPORT__SHEET__ = TYPES;
 })(this);

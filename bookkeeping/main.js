@@ -99,7 +99,7 @@ function OpenFormDialog() {
      .evaluate()
      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
      .setWidth(300)
-     .setHeight(220)
+     .setHeight(280)
      
     SpreadsheetApp.getUi()
       .showModalDialog(t, "Выставить счет");  
@@ -109,3 +109,33 @@ function OpenFormDialog() {
      ui.alert("Перейдите на лист Данные!")
   }
 }
+
+function RouterInvoiceAct(obj) {
+  
+  var date_invoice = obj.date_invoice
+  var date_act = obj.date_act
+  var status_period = obj.status_period
+  var status_send_email = obj.status_send_email
+  var contragent_details_not_empty = true
+  var obj_ss = getObjSpreadsheetApp()
+  var values_list = obj_ss.values_list
+
+  if (values_list[0][14].length == 0) {
+    contragent_details_not_empty = false
+  }
+
+  if (date_invoice && date_act && contragent_details_not_empty) {
+    obj_ss['act_sheet'].getRange(obj_ss['act_range'].getRow(), 8).setValue('Скрипт запущен')
+    dict_invoice = Invoice(date_invoice, status_period, obj_ss)
+    dict_act = Act(date_invoice, date_act,status_period, obj_ss)
+    if (status_send_email) {
+      sendInvoiceAndAct(dict_invoice, dict_act)
+    }
+      
+    obj_ss['act_sheet'].getRange(obj_ss['act_range'].getRow(), 8).setValue('Счет выставлен')
+  }
+  else {
+    var ui = SpreadsheetApp.getUi()
+    ui.alert("Заполните реквизиты контрагента или дату на форме и повторите снова.")
+  }
+} 

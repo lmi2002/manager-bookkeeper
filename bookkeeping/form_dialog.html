@@ -4,8 +4,16 @@
     <base target="_top">
     <style>
       
-      input{
-        width: 70%;
+      #input_invoice {
+        width: 50%;
+      }
+
+      #input_act {
+        width: 50%;
+      }
+
+      .addpadding  {
+        padding-right: 8px;
       }    
       
       .layer1 {
@@ -18,8 +26,7 @@
         bottom: 1px; /* Положение от нижнего края */
         right: 10px; /* Положение от правого края */
        }
-      
-    
+   
     </style>
 
   </head>
@@ -27,18 +34,32 @@
 
   <body>
    
-   <p id="code" ><b><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b> &nbsp <span id="beznal" ><b><?= getObjSpreadsheetApp()['values_list'][0][3]  + " грн" ?></b></span></p>
+    <p id="code" ><b><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b> &nbsp <span id="beznal" ><b><?= getObjSpreadsheetApp()['values_list'][0][3]  + " грн" ?></b></span></p>
   
-   <p id="contragent" class="p-value"><?= getObjSpreadsheetApp()['values_list'][0][5] ?></p>
-
+    <p id="contragent" class="p-value"><?= getObjSpreadsheetApp()['values_list'][0][5] ?></p>
+ 
    
     <p>
-      <label for="bday">Введите дату счёта:</label>
-      <input type="date" id="input" value=<?= getStrNowDay()?>>
+      <label for="input_invoice"><span>Дата счёта:</span></label>
+      <input type="date" id="input_invoice" value=<?= getStrNowDay()?>>  
     </p>
     
+    <p>
+    <label for="date_act"><span class="addpadding">Дата акта:</span></label>
+    <input type="date" id="date_act" value=<?= addDays30()?>>
+    </p>
+
     
-    
+    <p>
+      <span>Указать период:</span>  
+      <input id="period" type="checkbox" checked >
+    </p>
+
+    <p>
+      <span>Отправить на почту</span> 
+      <input id="send_email" type="checkbox" checked >
+    </p>
+
     <p class="layer1">  
       <input id="execute" type="button" value="Выставить" style="width: 100px;">
     </p>
@@ -53,8 +74,14 @@
   <script>
  
     function executeDia() {
-        var date = input.value
-        google.script.run.Invoice(date)
+      var nodelist = document.querySelectorAll('input')
+      var obj = {
+        "date_invoice": nodelist[0].value,
+        "date_act": nodelist[1].value,
+        "status_period": nodelist[2].checked,
+        "status_send_email": nodelist[3].checked
+      }
+      google.script.run.RouterInvoiceAct(obj)
     }
 
     function closeForm() {

@@ -332,7 +332,7 @@ function OpenFormDialog() {
      .evaluate()
      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
      .setWidth(300)
-     .setHeight(310)
+     .setHeight(330)
      
     SpreadsheetApp.getUi()
       .showModalDialog(t, "Выставить счет");  

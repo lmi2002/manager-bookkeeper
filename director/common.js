@@ -77,6 +77,7 @@ function  sendInvoiceAndAct(dict_invoice, dict_act) {
   GmailApp.sendEmail(dict_invoice['email'],"Счёт и акт на бытовку " + dict_invoice['code'], 'Пожалуйста посмотрите прикрепленный файл.', {  
     attachments: [dict_invoice['ss'].getAs('application/pdf'),dict_act['ss'].getAs('application/pdf')],
     htmlBody: getLetterBody(),
-    name: 'Бытовки Харьков'
+    name: 'Бытовки Харьков',
+    bcc: OFFICE_EMAIL
   })
 }

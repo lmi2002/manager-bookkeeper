@@ -35,7 +35,7 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
   var sd = sum_contract * 1
   sd.toLocaleString()
 
-  var act_num = 'Акт № ' + code + "/" + date_invoice_dd_mm
+  var act_num = 'Акт № ' + code + "/" + date_invoice_dd_mm + "/1"
   var contract = obj_ss['act_sheet'].getRange(obj_ss['act_range'].getRow(), 13).getValue()
   var contract_str = 'Ми, що нижче підписалися, ВИКОНАВЕЦЬ - ФОП Гордєєв Родіон Вікторович з однієї сторони, та ЗАМОВНИК -'  + contragent + ', з другої сторони, склали цей акт про те, що згідно  договору ' + contract + ' наступні роботи (послуги):'
   
@@ -43,7 +43,7 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
   var name_service = "Оренда вагона будівельного згідно договору за період " + start_date_format + " - " +  finish_date_dd_mm_yyyy
 
   var ss_template_act = SpreadsheetApp.openById(ID_TEMPLATE_FIRST_ACT)
-  var ss_copy_act = ss_template_act.copy('Акт ' + code + "/" + date_invoice_dd_mm + "/" + contragent)
+  var ss_copy_act = ss_template_act.copy('Акт 1 ' + code + "/" + date_invoice_dd_mm + "/" + contragent)
   var sh_ss_copy_act = ss_copy_act.getSheets()[0]
   sh_ss_copy_act.getRange('E1').setValue(act_num)
   sh_ss_copy_act.getRange('D3').setValue('складений ' + date_act_dd_mm_yyyy + " року")
@@ -64,12 +64,12 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
     sh_ss_copy_act.getRange('G19').setValue(contragent)
   }
   else {
-    sh_ss_copy_act.getRange('A9:Z9').deleteCells(SpreadsheetApp.Dimension.ROWS)
+    sh_ss_copy_act.hideRow(sh_ss_copy_act.getRange('A9:Z9'))
     sh_ss_copy_act.getRange('I8').setValue(sum_contract)
     sh_ss_copy_act.getRange('J9').setValue(sum_contract)
-    sh_ss_copy_act.getRange('A11').setValue("Ціна робіт (послуг) складає " + sum_contract + ",00 грн")
-    sh_ss_copy_act.getRange('A13').setValue("Разом " + sum_contract + ",00 (" + NumberInWords(sum_contract) + ") без ПДВ")
-    sh_ss_copy_act.getRange('G18').setValue(contragent)
+    sh_ss_copy_act.getRange('A12').setValue("Ціна робіт (послуг) складає " + sd.toLocaleString() + ",00 грн")
+    sh_ss_copy_act.getRange('A14').setValue("Разом " + sd.toLocaleString() + ",00 (" + NumberInWords(sum_contract) + ") без ПДВ")
+    sh_ss_copy_act.getRange('G19').setValue(contragent)
   }
     
   SpreadsheetApp.flush()

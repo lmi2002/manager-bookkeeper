@@ -1,22 +1,9 @@
-function Invoice(date) {
+function Invoice(date_invoice, status_period, obj_ss) {
   
-  var date = date
-  
-  if (date) {
-    var dict_copy_invoice_file  = copyInvoiceFile(date)
-    var file_dict = exportSpreadsheetToXlsx(dict_copy_invoice_file, 'xlsx');
-    var dict_move_files =  moveFiles(file_dict, date)
-    sendInvoiceToEmail(dict_move_files)
-    var obj = getObjSpreadsheetApp()
-    obj['act_sheet'].getRange(obj['act_range'].getRow(), 8).setValue('Счет выставлен')
-    return true
-  }
-  else {
-    var ui = SpreadsheetApp.getUi()
-    ui.alert("Вы не заполнили дату. Повторите снова!")
-  }
-  
-}
-function getStrNowDay() {
-  return Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd")
+  var date_invoice = date_invoice
+  var status_period = status_period
+  var values_list = obj_ss.values_list
+  var dict_copy_invoice_file  = copyInvoiceFile(date_invoice,status_period, values_list)
+  var file_dict = exportSpreadsheetToXlsx(dict_copy_invoice_file, 'xlsx');
+  return moveInvoiceFiles(file_dict, date_invoice)
 }

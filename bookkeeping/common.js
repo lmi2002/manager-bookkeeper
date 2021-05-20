@@ -6,9 +6,15 @@ function getStrNowDay_1() {
   return Utilities.formatDate(new Date(), "GMT", "dd.MM.yyyy")
 }
 
-function getFinishDate() {
-  var finish_date = getObjSpreadsheetApp().values_list[0][8]
-  return Utilities.formatDate(new Date(finish_date), "GMT", "yyyy-MM-dd")
+function getStrDay(date) {
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2 )
+  return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
+}
+
+function addDays30() {
+  var days_30 = getObjSpreadsheetApp().values_list[0][4]
+  var add_one_day =  new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 30)
+  return Utilities.formatDate(new Date(add_one_day), "GMT", "yyyy-MM-dd")
 }
 
 function getObjSpreadsheetApp() {
@@ -78,15 +84,38 @@ function exportSpreadsheetToXlsx(dict, type) {
 
 
 function  sendInvoiceAndAct(dict_invoice, dict_act) {
-  GmailApp.sendEmail(dict_invoice['email'],"Счёт и акт на бытовку " + dict_invoice['code'], 'Пожалуйста посмотрите прикрепленный файл.', {  
+  GmailApp.sendEmail(dict_invoice['email'],"Бытовки Харьков " + dict_invoice['invoice_num'] + " и " + dict_act['act_num'], 'Пожалуйста посмотрите прикрепленный файл.', {
     attachments: [dict_invoice['ss'].getAs('application/pdf'),dict_act['ss'].getAs('application/pdf')],
     htmlBody: getLetterBody(),
-    name: 'Бытовки Харьков', 
-    bcc: OFFICE_EMAIL
+    name: 'Бытовки Харьков'
   })
 }
 
 function validationIsNumber(str) {
   var reg = new RegExp('^[0-9]+$')
   return reg.test(str)
+}
+
+function writeErrorDataBase(e) {
+
+  let ui = SpreadsheetApp.getUi()
+
+  let ssPatternSpreadsheet = SpreadsheetApp.openById(ID_DataBase)
+  let sheetError = ssPatternSpreadsheet.getSheetByName("Error")
+  let lastRow = sheetError.getLastRow() + 1
+
+  ui.alert("Произошла ошибка, повторите снова!")
+
+  sheetError.getRange(lastRow, 1).setValue(getStrNowDay_1())
+  sheetError.getRange(lastRow, 2).setValue(e.name)
+  sheetError.getRange(lastRow, 3).setValue(e.message)
+  sheetError.getRange(lastRow, 4).setValue(e.stack)
+}
+
+function d() {
+ let i = 1;
+  windows.setTimeout(function run() {
+        func(i);
+        setTimeout(run, 100);
+      }, 100);
 }

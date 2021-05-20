@@ -101,7 +101,7 @@ function copyInvoiceFile(date_invoice, status_period, status_delivery, obj_ss) {
   var name_service = "Оренда вагона будівельного згідно договору за період "+ start_date_format + " - " +  finish_date_dd_mm_yyyy
 
   var ss_template_invoice = SpreadsheetApp.openById(ID_TEMPLATE_FIRST_INVOICE)
-  var ss_copy_invoice = ss_template_invoice.copy('Счет ' + code + "/" + dd_mm + "/" + contragent)
+  var ss_copy_invoice = ss_template_invoice.copy('Счет 1 ' + code + "/" + dd_mm + "/" + contragent)
   var sh_ss_copy_invoice = ss_copy_invoice.getSheets()[0]
   sh_ss_copy_invoice.getRange('D9').setValue(contragent)
   sh_ss_copy_invoice.getRange('D14').setValue(invoice_num)

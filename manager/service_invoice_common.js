@@ -136,3 +136,27 @@ function copyInvoiceFile(date_invoice, status_period, status_delivery, obj_ss) {
           "code": code
   }
 }
+
+function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
+  var date_invoice = new Date(date_invoice)
+  var date_invoice_format = Utilities.formatDate(date_invoice, "GMT", "dd.MM.yyyy")
+  var obj_ss = obj_ss
+  var ss = obj_ss.act_ss
+  var invoice_num = dict_invoice.invoice_num.slice(10)
+  var values_list = obj_ss.values_list
+  var code = values_list[0][0]
+  var beznal = values_list[0][6]
+  var contragent = values_list[0][11]
+  var contragent_code = values_list[0][21]
+
+
+  var sheet_journal = ss.getSheetByName("Журнал")
+  var last_row = sheet_journal.getLastRow() + 1
+  sheet_journal.getRange(last_row, 1).setValue(contragent)
+  sheet_journal.getRange(last_row, 2).setValue(contragent_code)
+  sheet_journal.getRange(last_row, 3).setValue(code)
+  sheet_journal.getRange(last_row, 4).setValue(invoice_num)
+  sheet_journal.getRange(last_row, 5).setValue(date_invoice_format)
+  sheet_journal.getRange(last_row, 6).setValue(beznal)
+  sheet_journal.getRange(last_row, 7).setValue(getStrNowDay_1())
+}

@@ -64,6 +64,11 @@
       <input id="delivery" type="checkbox">
     </p>
 
+    <p>
+      <span>Записать в журнал:</span>  
+      <input id="send_journal" type="checkbox" checked>
+    </p>
+
     <p class="layer1">  
       <input id="execute" type="button" value="Выставить" style="width: 100px;">
     </p>
@@ -84,7 +89,8 @@
         "date_act": nodelist[1].value,
         "status_period": nodelist[2].checked,
         "status_send_email": nodelist[3].checked,
-        "status_delivery": nodelist[4].checked
+        "status_delivery": nodelist[4].checked,
+        "send_journal": nodelist[5].checked
       }
       google.script.run.RouterInvoiceAct(obj)
     }

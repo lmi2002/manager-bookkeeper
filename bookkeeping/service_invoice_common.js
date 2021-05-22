@@ -134,6 +134,7 @@ function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
   var beznal = values_list[0][3]
   var contragent = values_list[0][5]
   var contragent_code = values_list[0][15]
+  var num_contract = values_list[0][6]
 
 
   var sheet_journal = ss.getSheetByName("Журнал")
@@ -145,4 +146,5 @@ function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
   sheet_journal.getRange(last_row, 5).setValue(date_invoice_format)
   sheet_journal.getRange(last_row, 6).setValue(beznal)
   sheet_journal.getRange(last_row, 7).setValue(getStrNowDay_1())
+  sheet_journal.getRange(last_row, 12).setValue(num_contract)
 }

@@ -365,4 +365,4 @@ function RouterInvoiceAct(obj) {
     var ui = SpreadsheetApp.getUi()
     ui.alert("Заполните реквизиты контрагента или дату на форме и повторите снова.")
   }
-} 
+}

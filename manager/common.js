@@ -1,9 +1,24 @@
+// Не использовать! Использовать функцию getStrNowDay_1
+function getNowDate(){
+  return Utilities.formatDate(new Date(), "GMT", "dd.MM.yyyy")
+}
+
 function getStrNowDay() {
   return Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd")
 }
 
 function getStrNowDay_1() {
   return Utilities.formatDate(new Date(), "GMT", "dd.MM.yyyy")
+}
+
+function getStrDay(date) {
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2 )
+  return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
+}
+
+function getStrDay_1(date) {
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 )
+  return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
 }
 
 function getFinishDate() {
@@ -89,4 +104,18 @@ function  sendInvoiceAndAct(dict_invoice, dict_act) {
 function validationIsNumber(str) {
   var reg = new RegExp('^[0-9]+$')
   return reg.test(str)
+}
+
+function  sendPersonLetterBody(comment, list) {
+  GmailApp.sendEmail(EMAIL_LAWYER_OFFICE,"Запрос " + list[0], "Автоматическая рассылка", {  
+    htmlBody: getPersonLetterBody(comment, list),
+    name: 'Родион'
+  })
+}
+
+function  sendCompanyLetterBody(obj, list) {
+  GmailApp.sendEmail(EMAIL_LAWYER_OFFICE,"Запрос " + list[0], "Автоматическая рассылка", {  
+    htmlBody: getCompanyLetterBody(obj, list),
+    name: 'Родион'
+  })
 }

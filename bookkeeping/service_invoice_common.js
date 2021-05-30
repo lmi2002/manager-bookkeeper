@@ -74,11 +74,11 @@ function copyInvoiceFile(date_invoice,status_period, values_list) {
   var status_period = status_period
   var values_list = values_list
   
-  var dd_mm = Utilities.formatDate(date_invoice, "GMT", "dd-MM")
+  var dd_mm_yy = Utilities.formatDate(date_invoice, "GMT", "dd-MM-yy")
   var dd = Utilities.formatDate(date_invoice, "GMT", "dd")
   var mm = Utilities.formatDate(date_invoice, "GMT", "MM")
   var yyyy = Utilities.formatDate(date_invoice, "GMT", "yyyy")
-  // var yy = Utilities.formatDate(date_invoice, "GMT", "yy")
+ 
 
   // Formating date
   var days_30 = new Date(values_list[0][4])
@@ -93,12 +93,11 @@ function copyInvoiceFile(date_invoice,status_period, values_list) {
   var email = values_list[0][9]
   var beznal = values_list[0][3]
   var contract_str = 'Договір оренди ' + values_list[0][6]
-  // var invoice_num = 'Рахунок № ' + code + "/" + dd_mm - yy
-  var invoice_num = 'Рахунок № ' + code + "/" + dd_mm
+  var invoice_num = 'Рахунок № ' + code + "/" + dd_mm_yy
   var name_service = "Оренда вагона будівельного за період 30 календарних днів (" + days_30_format + " - " +  add_30_days_format + ")"
 
   var ss_template_invoice = SpreadsheetApp.openById(ID_TEMPLATE_INVOICE)
-  var ss_copy_invoice = ss_template_invoice.copy('Счет ' + code + "/" + dd_mm + "/" + contragent)
+  var ss_copy_invoice = ss_template_invoice.copy('Счет ' + code + "/" + dd_mm_yy + "/" + contragent)
   var sh_ss_copy_invoice = ss_copy_invoice.getSheets()[0]
   sh_ss_copy_invoice.getRange('D9').setValue(contragent)
   sh_ss_copy_invoice.getRange('D14').setValue(invoice_num)

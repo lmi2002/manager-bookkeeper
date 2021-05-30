@@ -17,7 +17,7 @@ function copyActFile(date_invoice, date_act, status_period, values_list) {
   var status_period = status_period
   var values_list = values_list
 
-  var date_invoice_dd_mm = Utilities.formatDate(date_invoice, "GMT", "dd-MM")
+  var date_invoice_dd_mm_yy = Utilities.formatDate(date_invoice, "GMT", "dd-MM-yy")
   var date_act_dd_mm_yyyy = Utilities.formatDate(date_act, "GMT", "dd.MM.yyyy")
 
    
@@ -34,7 +34,7 @@ function copyActFile(date_invoice, date_act, status_period, values_list) {
   var add_30_days_format = Utilities.formatDate(add_30_days, "GMT", "dd.MM.yyyy")
 
   var contragent_details = values_list[0][14]
-  var act_num = 'Акт № ' + code + "/" + date_invoice_dd_mm
+  var act_num = 'Акт № ' + code + "/" + date_invoice_dd_mm_yy
 
   var contract_str = 'Ми, що нижче підписалися, ВИКОНАВЕЦЬ - ФОП Гордєєв Родіон Вікторович з однієї сторони, та ЗАМОВНИК -'  + contragent + ', з другої сторони, склали цей акт про те, що згідно  договору ' + values_list[0][6] + ' наступні роботи (послуги):'
   
@@ -42,7 +42,7 @@ function copyActFile(date_invoice, date_act, status_period, values_list) {
   var name_service = "Оренда вагона будівельного за період 30 календарних днів (" + days_30_format + " - " +  add_30_days_format + ")"
 
   var ss_template_act = SpreadsheetApp.openById(ID_TEMPLATE_ACT)
-  var ss_copy_act = ss_template_act.copy('Акт ' + code + "/" + date_invoice_dd_mm + "/" + contragent)
+  var ss_copy_act = ss_template_act.copy('Акт ' + code + "/" + date_invoice_dd_mm_yy + "/" + contragent)
   var sh_ss_copy_act = ss_copy_act.getSheets()[0]
   sh_ss_copy_act.getRange('E1').setValue(act_num)
   sh_ss_copy_act.getRange('D3').setValue('складений ' + date_act_dd_mm_yyyy + " року")

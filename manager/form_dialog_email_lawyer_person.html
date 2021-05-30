@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 10px; /* Положение от правого края */
+       }
+   
+    </style>
+
+  </head>
+
+
+  <body>
+   
+    <p ><b id="code"><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b></p>
+  
+    <p id="sum"><b>Сумма договора: <?= getObjSpreadsheetApp()['values_list'][0][4] + getObjSpreadsheetApp() ['values_list'][0][2] * getObjSpreadsheetApp()['values_list'][0][7] + " грн" ?></b></p>
+ 
+    <span>Комментарий:</span>
+
+    <textarea name="comment" cols="40" rows="6"><?= getObjSpreadsheetApp()['values_list'][0][10] ?></textarea>
+
+
+    <p class="layer1">  
+      <input id="execute" type="button" value="Отправить" style="width: 100px;">
+    </p>
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Отмена</button>
+    </p>
+    
+
+  </body>
+
+  <script>
+ 
+    function executeDia() {
+      var obj = {
+        "comment": document.querySelector('textarea').value,
+      }
+      google.script.run.runSendPersonLetter(obj)
+    }
+
+    function closeForm() {
+      setTimeout(function() {
+        google.script.host.close()
+      }, 1500)
+    }
+    
+    execute.onclick = function() {
+         executeDia()
+         closeForm()
+    }  
+   
+    window.closeDia = function() {
+      google.script.host.close()
+    };
+
+    </script>
+</html>

@@ -15,62 +15,67 @@ function onOpen() {
 function PromBox(){
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheetActive = ss.getActiveSheet()
 //  var ss_manager_oplati = SpreadsheetApp.openById('1E3ocje0AdmhgvBTjre524ETOduY8XEw4Yd_g0SJ1mU0').getSheetByName('ОПЛАТЫ') // id "ДИРЕКТОР_version"
-  var sh_data = ss.getSheetByName("Данные");
-  var sh_oplata = ss.getSheetByName("Оплата");
-  var range = sh_data.getActiveRange();
-  var range_sort = sh_data.getRange(2,1, sh_data.getLastRow()-1, sh_data.getLastColumn())
+  if (sheetActive.getSheetName() == "Данные") {
+    var sh_data = ss.getSheetByName("Данные");
+    var sh_oplata = ss.getSheetByName("Оплата");
+    var range = sh_data.getActiveRange();
+    var range_sort = sh_data.getRange(2,1, sh_data.getLastRow()-1, sh_data.getLastColumn())
      
     
     
-   // Получаю массив значений из элементов (Код, Дата Отгрузки, Нал, БЕЗНАЛ за 3 дней БЕЗ НДС, Конец периода 30 дней, Контрагент)
-   var arr = sh_data.getRange(range.getRow(), 1, 1, 8).getValues();
+    // Получаю массив значений из элементов (Код, Дата Отгрузки, Нал, БЕЗНАЛ за 3 дней БЕЗ НДС, Конец периода 30 дней, Контрагент)
+    var arr = sh_data.getRange(range.getRow(), 1, 1, 8).getValues();
     
-   var code = arr[0][0]
-   var nal = arr[0][2]
-   var beznal = arr[0][3]
-   var days_30 = arr[0][4]
-   var contragent = arr[0][5]
-   var status = arr[0][7]
+    var code = arr[0][0]
+    var nal = arr[0][2]
+    var beznal = arr[0][3]
+    var days_30 = arr[0][4]
+    var contragent = arr[0][5]
+    var status = arr[0][7]
     
-   // Вызов Promt
-   var ui = SpreadsheetApp.getUi();
-   var promt = ui.prompt("Провести оплату", "Введите дату оплаты счета. \n Код: " + code  + "\n Контрагент: " +  contragent, ui.ButtonSet.OK_CANCEL);   
-   var button = promt.getSelectedButton()
+    // Вызов Promt
+    var ui = SpreadsheetApp.getUi();
+    var promt = ui.prompt("Провести оплату", "Введите дату оплаты счета. \n Код: " + code  + "\n Контрагент: " +  contragent, ui.ButtonSet.OK_CANCEL);   
+    var button = promt.getSelectedButton()
         
     
     
     // Добавляет данные в лист Оплата при нажатии кнопки ОК
-   if (button == ui.Button.OK){
+    if (button == ui.Button.OK){
       
-     sh_data.getRange(range.getRow(),8).setValue("Оплатили")
+      sh_data.getRange(range.getRow(),8).setValue("Оплатили")
      
-     var date = Utilities.formatDate(days_30, "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'")
+      var date = Utilities.formatDate(days_30, "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'")
       
-     var d = new Date(date) // Создали объект даты
+      var d = new Date(date) // Создали объект даты
      
-     sh_data.getRange(range.getRow(),5).setValue(new Date(d.getFullYear(), d.getMonth(), d.getDate() + 30)) // Добавили 30 дней к дате и изменили в ячейке.
+      sh_data.getRange(range.getRow(),5).setValue(new Date(d.getFullYear(), d.getMonth(), d.getDate() + 30)) // Добавили 30 дней к дате и изменили в ячейке.
      
-     //Сортировка
-     range_sort.sort({column: 5, ascending: true});       
+      //Сортировка
+      range_sort.sort({column: 5, ascending: true});       
     
-     var rows_oplata = sh_oplata.getLastRow(); // кол-во строк
+      var rows_oplata = sh_oplata.getLastRow(); // кол-во строк
      
-     // Добавляю данные по ячейкам в лист Оплата
-     sh_oplata.getRange(rows_oplata + 1, 1,1).setValue(code).setBackground('#DEE9FC')
-     sh_oplata.getRange(rows_oplata + 1, 2,1).setValue(nal).setBackground('#DEE9FC')
-     sh_oplata.getRange(rows_oplata + 1, 3,1).setValue(beznal).setBackground('#DEE9FC')
-     sh_oplata.getRange(rows_oplata + 1, 4,1).setValue(promt.getResponseText()).setBackground('#DEE9FC')
-     sh_oplata.getRange(rows_oplata + 1, 5,1).setValue(contragent).setBackground('#DEE9FC')
-     sh_oplata.getRange(rows_oplata + 1, 6,1).setValue(d)
-     sh_oplata.getRange(rows_oplata + 1, 7,1).setValue(status)
-   }
+      // Добавляю данные по ячейкам в лист Оплата
+      sh_oplata.getRange(rows_oplata + 1, 1,1).setValue(code).setBackground('#DEE9FC')
+      sh_oplata.getRange(rows_oplata + 1, 2,1).setValue(nal).setBackground('#DEE9FC')
+      sh_oplata.getRange(rows_oplata + 1, 3,1).setValue(beznal).setBackground('#DEE9FC')
+      sh_oplata.getRange(rows_oplata + 1, 4,1).setValue(promt.getResponseText()).setBackground('#DEE9FC')
+      sh_oplata.getRange(rows_oplata + 1, 5,1).setValue(contragent).setBackground('#DEE9FC')
+      sh_oplata.getRange(rows_oplata + 1, 6,1).setValue(d)
+      sh_oplata.getRange(rows_oplata + 1, 7,1).setValue(status)
+    }
    
     // Отменяет действие при нажатии кнопки Отмена
-   else if (button = ui.Button.CANCEL){
-     ui.alert("Проводка отменена")      
-   }    
-  
+    else if (button = ui.Button.CANCEL){
+      ui.alert("Проводка отменена")      
+    }
+  }  
+  else {
+     SpreadsheetApp.getUi().alert("Перейдите на лист Данные!")
+  }     
 }
 
 // Автозаполнение столбца B лист Оплата, при изменении столбца С
@@ -214,14 +219,10 @@ function writePaymentInvoiceToJouranl(obj) {
   let sum = getInvoiceAggregatorSummSQL(listData[0][3])
   let payment_sum = Number(obj.payment_sum)
   let payment_date = obj.payment_date
-  let step = 5
-  let rangeInvoice = "Журнал!D1:D" + numRow + step * 2
-  let rangeSort = sheetActive.getRange(2,1, sheetActive.getLastRow()-1, lastColumn)
+  let rangeInvoice = "Журнал!D1:D"
+  let rangeSort = sheetActive.getRange(2,1, sheetActive.getLastRow(), lastColumn)
   let bool = true
-
-  rangeSort.sort([{column: 5, ascending: true}, {column: 4, ascending: true}])
-
-  
+ 
   if (listData[0][10] == "") {
 
     sheetActive.getRange(numRow, 10).setValue(payment_date)
@@ -275,7 +276,7 @@ function writePaymentInvoiceToJouranl(obj) {
           }  
       }
 
-      makePaymentToData(listData,payment_sum)
+      makePaymentToData(listData,payment_date)
       ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " +( payment_sum + sum))
 
     }
@@ -297,7 +298,7 @@ function makePaymentToData(listDataJournal,paymentDate) {
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh_data = ss.getSheetByName("Данные");
   let sh_oplata = ss.getSheetByName("Оплата");
-  let listData = readRange(speadsheetData.id, speadsheetData.range)
+  let listData = readRange(speadsheetBookkeeper.id, speadsheetBookkeeper.rangeSheetData)
   for (let i = 0; i < listData.length; i++ ) {
     if (listData[i][0] == listDataJournal[0][2]) {
       var numRow = i + 2

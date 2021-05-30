@@ -1,4 +1,4 @@
-var speadsheetData = {
-  "range": "A2:P",
-  "id": SpreadsheetApp.getActiveSpreadsheet().getId()
+var speadsheetBookkeeper = {
+  "id": SpreadsheetApp.getActiveSpreadsheet().getId(),
+  "rangeSheetData": "Данные!A2:P"
 }

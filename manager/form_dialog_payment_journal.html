@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      
+      #payment_date, #payment_sum {
+        width: 70%;
+      }
+
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 10px; /* Положение от правого края */
+       }
+   
+    </style>
+
+  </head>
+
+
+  <body>
+   
+    <p><b><?= getObjSpreadsheetApp()['values_list'][0][3] ?></b> &nbsp <span><b><?= getObjSpreadsheetApp()['values_list'][0][5]  + " грн" ?></b></span></p>
+
+    <p><b>Дата счёта:</b> &nbsp <span><b><?= getStrDay(getObjSpreadsheetApp()['values_list'][0][4]) ?></b></span></p>
+ 
+    <p>
+      <label for="payment_date"><span>Дата оплаты счёта:</span></label>
+      <input type="date" id="payment_date" value=<?= getStrNowDay()?>>  
+    </p>
+
+    <p>
+      <label for="payment_sum"><span>Сумма оплаты счёта:</span></label>
+      <input  id="payment_sum" value=<?= differenceAmountInvoice() ?>> 
+    </p>
+
+    <p class="layer1">  
+      <input id="execute" type="button" value=" Провести" style="width: 100px;">
+    </p>
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Отмена</button>
+    </p>
+    
+
+  </body>
+
+  <script>
+ 
+    function executeDia() {
+      var nodelist = document.querySelectorAll('input')
+      var obj = {
+        "payment_date": nodelist[0].value,
+        "payment_sum": nodelist[1].value
+      }
+      google.script.run.writePaymentInvoiceToJouranl(obj)
+    }
+
+    function closeForm() {
+      setTimeout(function() {
+        google.script.host.close()
+      }, 1500)
+    }
+    
+    execute.onclick = function() {
+         executeDia()
+         closeForm()
+    }  
+   
+    window.closeDia = function() {
+      google.script.host.close()
+    };
+
+    </script>
+</html>

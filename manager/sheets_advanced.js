@@ -54,6 +54,17 @@ function getFilterData(data, col, filter) {
   return list
 }
 
+
+function getFilterData_1(datalist, filter_list) {
+
+  return datalist.filter(function(ind) {
+    return filter_list.some(function(item) {
+      return item == ind
+    })
+  })
+}
+
+
 function getFilterDataAddFirstEmpty(data, col, filter) {
   var list = []
   for (var i = 0; i < data.length; i++) {
@@ -95,6 +106,33 @@ function rangeConcat(firstcol, firstindex, secondcol, secondindex) {
   return firstcol + firstindex + ':' + secondcol + secondindex
 }
 
-function getNowDate(){
-  return Utilities.formatDate(new Date(), "GMT", "dd.MM.yyyy")
+
+function setFilter() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  var filterSettings = {};
+  
+  // The range of data on which you want to apply the filter.
+  // optional arguments: startRowIndex, startColumnIndex, endRowIndex, endColumnIndex
+  filterSettings.range = {
+    sheetId: ss.getActiveSheet().getSheetId()
+  };
+
+  // Criteria for showing/hiding rows in a filter
+  // https://developers.google.com/sheets/api/reference/rest/v4/FilterCriteria
+  filterSettings.criteria = {};
+  var columnIndex = 3;
+  filterSettings['criteria'][3] = {
+    'visibilityValues': ["Е-35/01-05"]
+  };
+  filterSettings['criteria'][4] = {
+    'visibilityValues': ["4180"]
+  };
+  
+  var request = {
+    "setBasicFilter": {
+      "filter": filterSettings
+    }
+  };
+  Sheets.Spreadsheets.batchUpdate({'requests': [request]}, ss.getId());
 }

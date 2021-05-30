@@ -266,7 +266,7 @@ function OpenFormDialogEmailLawyerPerson() {
           .setHeight(300)
 
         SpreadsheetApp.getUi()
-          .showModalDialog(t, "Отправка имейл юристам")
+          .showModalDialog(t, "Запрос Физлицо")
       }
       else {
         SpreadsheetApp.getUi().alert("Суммы не совпадают!")
@@ -298,7 +298,7 @@ function OpenFormDialogEmailLawyerCompany() {
           .setHeight(300)
 
         SpreadsheetApp.getUi()
-          .showModalDialog(t, "Отправка имейл юристам")
+          .showModalDialog(t, "Запрос Юрлицо")
       }
       else {
         SpreadsheetApp.getUi().alert("Суммы не совпадают!")

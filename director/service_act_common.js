@@ -37,7 +37,7 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
 
   var act_num = 'Акт № ' + code + "/" + date_invoice_dd_mm_yy + "/1"
   var contract = obj_ss['act_sheet'].getRange(obj_ss['act_range'].getRow(), 13).getValue()
-  var contract_str = 'Ми, що нижче підписалися, ВИКОНАВЕЦЬ - ФОП Гордєєв Родіон Вікторович з однієї сторони, та ЗАМОВНИК -'  + contragent + ', з другої сторони, склали цей акт про те, що згідно  договору ' + contract + ' наступні роботи (послуги):'
+  var contract_str = 'Ми, що нижче підписалися, ВИКОНАВЕЦЬ - ФОП ' + DIRECTOR_NAME_ENTIRE + ' з однієї сторони, та ЗАМОВНИК -'  + contragent + ', з другої сторони, склали цей акт про те, що згідно  договору ' + contract + ' наступні роботи (послуги):'
   
      
   var name_service = "Оренда вагона будівельного згідно договору за період " + start_date_format + " - " +  finish_date_dd_mm_yyyy

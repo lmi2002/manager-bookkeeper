@@ -49,7 +49,7 @@ function Payment(person, date){
    // Добавляю данные по ячейкам в лист Оплата
    sh_oplata.getRange(rows_oplata + 1, 2,1).setValue(code)
      
-   if (person == "gordeev") {
+   if (person == "director") {
      sh_oplata.getRange(rows_oplata + 1, 3,1).setValue(nal)
      }
    else{

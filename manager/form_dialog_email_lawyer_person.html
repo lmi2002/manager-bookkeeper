@@ -14,6 +14,10 @@
         bottom: 1px; /* Положение от нижнего края */
         right: 10px; /* Положение от правого края */
        }
+
+       #person {
+        word-break: break-all;
+      }
    
     </style>
 
@@ -22,9 +26,11 @@
 
   <body>
    
-    <p ><b id="code"><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b></p>
+    <p><b id="code"><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b></p>
   
     <p id="sum"><b>Сумма договора: <?= getObjSpreadsheetApp()['values_list'][0][4] + getObjSpreadsheetApp() ['values_list'][0][2] * getObjSpreadsheetApp()['values_list'][0][7] + " грн" ?></b></p>
+
+    <p><b id="person"><?= getObjSpreadsheetApp()['values_list'][0][11] ?></b></p>
  
     <span>Комментарий:</span>
 

@@ -12,7 +12,7 @@ function getPersonLetterBody(comment, list) {
   let commentHtml = "<p>" + comment + "</p>"
 
   if (comment) {
-    commentHtml = "<br>" + "<p>" + comment + "</p>" +"<br>"
+    commentHtml = "<br></br>" + "<p>" + comment + "</p>" +"<br></br>"
   }
   
   return "<p>Добрий день!</p>" + 
@@ -24,7 +24,7 @@ function getPersonLetterBody(comment, list) {
         "<p>Контакт: " + list[11] + "</p>" +
         "<p>Адрес объекта: " + list[18] + "</p>" +
         "<p>Дата доставки: " + date + "</p>" +
-        "<br>" +
+        "<br></br>" +
         "<p>Родион</p>"
 }
 

@@ -133,7 +133,8 @@ function copyInvoiceFile(date_invoice, status_period, status_delivery, obj_ss) {
           'ss': ss_copy_invoice,
           "invoice_num": invoice_num,
           "email": email,
-          "code": code
+          "code": code,
+          "contract": contract
   }
 }
 
@@ -143,11 +144,12 @@ function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
   var obj_ss = obj_ss
   var ss = obj_ss.act_ss
   var invoice_num = dict_invoice.invoice_num.slice(10)
+  var contract = dict_invoice.contract
   var values_list = obj_ss.values_list
   var code = values_list[0][0]
   var beznal = values_list[0][6]
   var contragent = values_list[0][11]
-  var contragent_code = values_list[0][21]
+  var contragent_code = values_list[0][23]
 
 
   var sheet_journal = ss.getSheetByName("Журнал")
@@ -159,4 +161,5 @@ function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
   sheet_journal.getRange(last_row, 5).setValue(date_invoice_format)
   sheet_journal.getRange(last_row, 6).setValue(beznal)
   sheet_journal.getRange(last_row, 7).setValue(getStrNowDay_1())
+  sheet_journal.getRange(last_row, 12).setValue(contract)
 }

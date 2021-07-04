@@ -119,21 +119,27 @@ function PaymentInvoiceToJouranl() {
   if (sheetActive.getSheetName() == "Журнал") {
     let listData = objSpreadsheetApp.values_list
     let numInvoice = listData[0][3]
+    let code = listData[0][1]
 
-    let sum = getInvoiceAggregatorSummSQL(numInvoice)
+    if (code) {
+      let sum = getInvoiceAggregatorSummSQL(numInvoice)
 
-    if (sum < listData[0][5]) {
+      if (sum < listData[0][5]) {
 
-      if (sum == 0) {
-        OpenFormDialogPaymentJournal()
+        if (sum == 0) {
+          OpenFormDialogPaymentJournal()
+        }
+        else {    
+          OpenFormDialogPaymentJournalCreateInvoice()
+        }
       }
-      else {    
-        OpenFormDialogPaymentJournalCreateInvoice()
+      else {
+        ui.alert("Счет полностью оплачен!")
       }
-    }
+    }  
     else {
-      ui.alert("Счет полностью оплачен!")
-    }
+      ui.alert("Заполните код ЄДРПОУ/ИНН по счету " + numInvoice)
+    }  
   }        
   else {
     ui.alert("Перейдите на лист Журнал!")
@@ -158,14 +164,13 @@ function writePaymentInvoiceToJouranl(obj) {
     let rangeInvoice = "Журнал!D1:D"
     let rangeSort = sheetActive.getRange(2,1, sheetActive.getLastRow(), lastColumn)
     let bool = true
-    let numContract = getNumContractFromSheetAvailable(listData)
-    let paymentDate = obj.payment_date
+    // let numContract = getNumContractFromSheetAvailable(listData)
   
     if (listData[0][10] == "") {
 
       sheetActive.getRange(numRow, 10).setValue(payment_date)
       sheetActive.getRange(numRow, 11).setValue(payment_sum)
-      sheetActive.getRange(numRow, 12).setValue(numContract)
+      // sheetActive.getRange(numRow, 12).setValue(numContract)
     
     
       if (payment_sum  >= listData[0][5]) {
@@ -191,7 +196,7 @@ function writePaymentInvoiceToJouranl(obj) {
         }
         sheetActive.getRange(numRow, 10).setValue(payment_date)
         sheetActive.getRange(numRow, 11).setValue(payment_sum)
-        sheetActive.getRange(numRow, 12).setValue(numContract)
+        // sheetActive.getRange(numRow, 12).setValue(numContract)
 
         // Ожидание заполнения суммой ячейки
         let iter = 0
@@ -222,7 +227,6 @@ function writePaymentInvoiceToJouranl(obj) {
         }
         makePaymentToSheetAvailable(listData)
         let listFilterNumInvoice = getNumInvoiceFilterFromSheetJournalSQL(listData[0][3])
-        Logger.log(listFilterNumInvoice)
         addPaymentInvoiceToBookkeeperJournal(listFilterNumInvoice)
         addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice)
         ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum))
@@ -235,7 +239,7 @@ function writePaymentInvoiceToJouranl(obj) {
         }
         sheetActive.getRange(numRow, 10).setValue(payment_date)
         sheetActive.getRange(numRow, 11).setValue(payment_sum)
-        sheetActive.getRange(numRow, 12).setValue(numContract)
+        // sheetActive.getRange(numRow, 12).setValue(numContract)
         makePartialPaymentToSheetAvailable(listData)
         ui.alert("Оплата счета прошла упешно. Счет оплачен частично.")
       }
@@ -263,7 +267,7 @@ function OpenFormDialogEmailLawyerPerson() {
           .evaluate()
           .setSandboxMode(HtmlService.SandboxMode.IFRAME)
           .setWidth(350)
-          .setHeight(300)
+          .setHeight(400)
 
         SpreadsheetApp.getUi()
           .showModalDialog(t, "Запрос Физлицо")
@@ -295,7 +299,7 @@ function OpenFormDialogEmailLawyerCompany() {
           .evaluate()
           .setSandboxMode(HtmlService.SandboxMode.IFRAME)
           .setWidth(350)
-          .setHeight(300)
+          .setHeight(400)
 
         SpreadsheetApp.getUi()
           .showModalDialog(t, "Запрос Юрлицо")

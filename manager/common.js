@@ -12,7 +12,7 @@ function getStrNowDay_1() {
 }
 
 function getStrDay(date) {
-  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2 )
+  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 )
   return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
 }
 

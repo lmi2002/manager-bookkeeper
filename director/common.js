@@ -81,3 +81,4 @@ function  sendInvoiceAndAct(dict_invoice, dict_act) {
     bcc: OFFICE_EMAIL
   })
 }
+

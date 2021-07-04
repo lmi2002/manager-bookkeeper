@@ -12,7 +12,7 @@ function getPersonLetterBody(comment, list) {
   let commentHtml = "<p>" + comment + "</p>"
 
   if (comment) {
-    commentHtml = "<br>" + "<p>" + comment + "</p>" +"<br>"
+    commentHtml = "<br></br>" + "<p>" + comment + "</p>" +"<br></br>"
   }
   
   return "<p>Добрий день!</p>" + 
@@ -24,7 +24,7 @@ function getPersonLetterBody(comment, list) {
         "<p>Контакт: " + list[11] + "</p>" +
         "<p>Адрес объекта: " + list[18] + "</p>" +
         "<p>Дата доставки: " + date + "</p>" +
-        "<br>" +
+        "<br></br>" +
         "<p>Родион</p>"
 }
 
@@ -37,24 +37,24 @@ function getCompanyLetterBody(obj, list) {
   let deliveryHtml = "<p></p>"
 
   if (comment) {
-    commentHtml = "<br>" + "<p>" + comment + "</p>" +"<br>"
+    commentHtml = "<br></br>" + "<p>" + comment + "</p>" +"<br></br>"
   }
   if(delivery) {
-    deliveryHtml = "<br>" + "<p>Отдельно укажите пожалуйста стоимость доставки: " + list[5] + "</p>" +"<br>"
+    deliveryHtml = "<br></br>" + "<p>Отдельно укажите пожалуйста стоимость доставки: " + list[5] + "</p>" +"<br></br>"
   }
   
   return "<p>Добрий день!</p>" + 
         "<p>Сдаем бытовку " + list[0] +" на " + list[7] + " мес</p>" +
         "<p>контрагент: " + list[11] + "</p>" +
-        "<br>" +
+        "<br></br>" +
         "<p>Номер договора: " + list[12] +  "</p>" +
         "<p>сумма по договору: " + sum + " грн</p>" +
         "<p>Стоимость следующего периода (30 дней): " + list[3] + " грн</p>" +
         deliveryHtml +
         commentHtml +
-        "<p>Контакт: " + list[14] + "<br>" + list[17] + "</p>" +
+        "<p>Контакт: " + list[14] + "</br>" + list[17] + "</p>" +
         "<p>Адрес объекта: " + list[18] + "</p>" +
         "<p>Дата доставки: " + date + "</p>" +
-        "<br>" +
+        "<br></br>" +
         "<p>Родион</p>"
 }

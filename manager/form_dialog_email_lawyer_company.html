@@ -14,6 +14,10 @@
         bottom: 1px; /* Положение от нижнего края */
         right: 10px; /* Положение от правого края */
        }
+
+      #contragent {
+        word-break: break-all;
+      } 
    
     </style>
 
@@ -22,10 +26,12 @@
 
   <body>
    
-    <p ><b id="code"><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b></p>
+    <p><b id="code"><?= getObjSpreadsheetApp()['values_list'][0][0] ?></b></p>
   
     <p id="sum"><b>Сумма договора: <?= getObjSpreadsheetApp()['values_list'][0][5] + getObjSpreadsheetApp() ['values_list'][0][3] * getObjSpreadsheetApp()['values_list'][0][7] + " грн" ?></b></p>
- 
+
+    <p><b id="contragent"><?= getObjSpreadsheetApp()['values_list'][0][11] ?></b></p>
+
     <span>Комментарий:</span>
 
     <textarea name="comment" cols="40" rows="6"><?= getObjSpreadsheetApp()['values_list'][0][10] ?></textarea>

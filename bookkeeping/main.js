@@ -231,7 +231,7 @@ function writePaymentInvoiceToJouranl(obj) {
     
     if (payment_sum  >= listData[0][5]) {
       sheetActive.getRange(numRow, 1, 1, lastColumn).setBackground("#B7E1CD")
-      makePaymentToData(listData,payment_sum)
+      makePaymentToData(listData,payment_date)
       ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " +( payment_sum + sum))
     }
     else {
@@ -298,6 +298,7 @@ function makePaymentToData(listDataJournal,paymentDate) {
   let ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh_data = ss.getSheetByName("Данные");
   let sh_oplata = ss.getSheetByName("Оплата");
+  Logger.log(paymentDate)
   let listData = readRange(speadsheetBookkeeper.id, speadsheetBookkeeper.rangeSheetData)
   for (let i = 0; i < listData.length; i++ ) {
     if (listData[i][0] == listDataJournal[0][2]) {
@@ -343,3 +344,4 @@ function makePaymentToData(listDataJournal,paymentDate) {
   sh_oplata.getRange(rows_oplata + 1, 6,1).setValue(d)
   sh_oplata.getRange(rows_oplata + 1, 7,1).setValue(status)  
 }
+

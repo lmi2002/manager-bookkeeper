@@ -22,7 +22,7 @@ function addPaymentInvoiceToBookkeeperSheetPayment(list) {
   let firstElem = list[0]
   let lastRow = sheetPayment.getLastRow() + 1
   let lastColumn = sheetPayment.getLastColumn()
-  let = nal = Number(firstElem[5]) * 0.9091
+  let = nal = Math.floor(Number(firstElem[5]) * 0.9091)
 
   let listDate = list.map(function(el) {
     return el[9]
@@ -47,6 +47,7 @@ function addPaymentInvoiceToBookkeeperSheetPayment(list) {
   sheetPayment.getRange(lastRow, 1, 1, lastColumn).setBackground("#FFF2CC")
 }
 
+// Получить номер договора на листе Свободные (функционал не используется)
 function getNumContractFromSheetAvailable(listDataJournal) {
 
   let ss = SpreadsheetApp.getActiveSpreadsheet();

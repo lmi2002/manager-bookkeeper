@@ -27,10 +27,17 @@ function copyActFile(date_invoice, date_act, status_period, values_list) {
 
   // Formating date
   var days_30 = new Date(values_list[0][4])
-  var d = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 1 )
-  var days_30_format = Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
 
-  var add_30_days = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 30)
+  if (checkDateCorrectFormat(values_list[0][4])) {
+    var d = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 1 )
+    var add_30_days = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 30)
+  }
+  else {
+    var d = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 2 )
+    var add_30_days = new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 31)
+  }
+
+  var days_30_format = Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
   var add_30_days_format = Utilities.formatDate(add_30_days, "GMT", "dd.MM.yyyy")
 
   var contragent_details = values_list[0][14]

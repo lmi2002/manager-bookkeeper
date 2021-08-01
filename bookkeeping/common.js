@@ -13,7 +13,14 @@ function getStrDay(date) {
 
 function addDays30() {
   var days_30 = getObjSpreadsheetApp().values_list[0][4]
-  var add_one_day =  new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 30)
+
+  if (checkDateCorrectFormat(days_30)) {
+    var add_one_day =  new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 30)
+  }
+  else {
+    var add_one_day =  new Date(days_30.getFullYear(), days_30.getMonth(), days_30.getDate() + 31)
+  }
+
   return Utilities.formatDate(new Date(add_one_day), "GMT", "yyyy-MM-dd")
 }
 
@@ -118,4 +125,13 @@ function d() {
         func(i);
         setTimeout(run, 100);
       }, 100);
+}
+
+function checkDateCorrectFormat(objDate) {
+  let correctFormat = true
+  const strObjDate = String(objDate).split(" ")
+  if (strObjDate[4] == "23:00:00") {
+    correctFormat = false
+  }
+  return correctFormat
 }

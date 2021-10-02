@@ -1,4 +1,4 @@
-function onOpen(e) {
+function addCustomMenu() {
   let email = Session.getEffectiveUser().getEmail()
   
   let permition = EMAIL_PERMITION_LIST.some(function(item){
@@ -29,26 +29,35 @@ function OpenFormDialog() {
   
   if (obj['act_sheet'].getName() == 'СВОБОДНЫЕ') {
     var contragent = obj.values_list[0][11]
+    var contragentDetails = obj.values_list[0][22]
+    var addDays = new Date(obj.values_list[0][1].getFullYear(), obj.values_list[0][1].getMonth(), obj.values_list[0][1].getDate() + 30 * Number(obj.values_list[0][7])).getTime()
+    var finishDate = new Date(obj.values_list[0][8]).getTime()
 
-    if (contragent) {
+    if (contragent && contragentDetails) {
 
       if (Number(obj.values_list[0][3]) * Number(obj.values_list[0][7]) + Number(obj.values_list[0][5]) == Number(obj.values_list[0][6])) {
+
+        if (addDays == finishDate) {
       
-        var t = HtmlService.createTemplateFromFile('form_dialog')
-        .evaluate()
-        .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-        .setWidth(300)
-        .setHeight(350)
+          var t = HtmlService.createTemplateFromFile('form_dialog')
+            .evaluate()
+            .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+            .setWidth(300)
+            .setHeight(350)
      
-        SpreadsheetApp.getUi()
-          .showModalDialog(t, "Выставить счет");
+          SpreadsheetApp.getUi()
+            .showModalDialog(t, "Выставить счет");
+        }    
+        else {
+          SpreadsheetApp.getUi().alert("Даты не совпадают!")
+        }    
       }
       else {
         SpreadsheetApp.getUi().alert("Суммы не совпадают!")
       }  
     }
     else {
-      SpreadsheetApp.getUi().alert('Заполните значением столбец "Контрагент"')
+      SpreadsheetApp.getUi().alert('Не заполнено значением столбец "Контрагент" или "Реквизиты контрагента"')
     }   
   }
   else {
@@ -179,7 +188,7 @@ function writePaymentInvoiceToJouranl(obj) {
         let listFilterNumInvoice = getNumInvoiceFilterFromSheetJournalSQL(listData[0][3])
         addPaymentInvoiceToBookkeeperJournal(listFilterNumInvoice)
         addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice)
-        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum))
+        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum) + "\n" + "Нажмите ОК для полной проводки этой оплаты.")
       }
       else {
         makePartialPaymentToSheetAvailable(listData)
@@ -229,7 +238,7 @@ function writePaymentInvoiceToJouranl(obj) {
         let listFilterNumInvoice = getNumInvoiceFilterFromSheetJournalSQL(listData[0][3])
         addPaymentInvoiceToBookkeeperJournal(listFilterNumInvoice)
         addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice)
-        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum))
+        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum) + "\n" + "Нажмите ОК для полной проводки этой оплаты.")
 
       }
       else {
@@ -260,17 +269,24 @@ function OpenFormDialogEmailLawyerPerson() {
     let list = objSpreadsheetApp.values_list[0]
     let sum = Number(list[2]) * Number(list[7]) + Number(list[4])
     let sum_delivery = Number(list[6])
+    let addDays = new Date(list[1].getFullYear(), list[1].getMonth(), list[1].getDate() + 30 * Number(list[7])).getTime()
+    let finishDate = new Date(list[8]).getTime()
 
     if (sheetActive.getSheetName() == "СВОБОДНЫЕ") {
       if (sum == sum_delivery) {
-        var t = HtmlService.createTemplateFromFile('form_dialog_email_lawyer_person')
-          .evaluate()
-          .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-          .setWidth(350)
-          .setHeight(400)
+        if (addDays == finishDate) {
+          var t = HtmlService.createTemplateFromFile('form_dialog_email_lawyer_person')
+            .evaluate()
+            .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+            .setWidth(350)
+            .setHeight(400)
 
-        SpreadsheetApp.getUi()
-          .showModalDialog(t, "Запрос Физлицо")
+          SpreadsheetApp.getUi()
+            .showModalDialog(t, "Запрос Физлицо")
+        }
+        else {
+          SpreadsheetApp.getUi().alert("Даты не совпадают!")
+        }    
       }
       else {
         SpreadsheetApp.getUi().alert("Суммы не совпадают!")
@@ -292,17 +308,24 @@ function OpenFormDialogEmailLawyerCompany() {
     let list = objSpreadsheetApp.values_list[0]
     let sum = Number(list[3]) * Number(list[7]) + Number(list[5])
     let sum_delivery = Number(list[6])
+    let addDays = new Date(list[1].getFullYear(), list[1].getMonth(), list[1].getDate() + 30 * Number(list[7])).getTime()
+    let finishDate = new Date(list[8]).getTime()
 
     if (sheetActive.getSheetName() == "СВОБОДНЫЕ") {
       if (sum == sum_delivery) {
-        var t = HtmlService.createTemplateFromFile('form_dialog_email_lawyer_company')
-          .evaluate()
-          .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-          .setWidth(350)
-          .setHeight(400)
+        if (addDays == finishDate) {
+          var t = HtmlService.createTemplateFromFile('form_dialog_email_lawyer_company')
+            .evaluate()
+            .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+            .setWidth(350)
+            .setHeight(400)
 
-        SpreadsheetApp.getUi()
-          .showModalDialog(t, "Запрос Юрлицо")
+          SpreadsheetApp.getUi()
+            .showModalDialog(t, "Запрос Юрлицо")
+        }
+        else {
+          SpreadsheetApp.getUi().alert("Даты не совпадают!")
+        }
       }
       else {
         SpreadsheetApp.getUi().alert("Суммы не совпадают!")

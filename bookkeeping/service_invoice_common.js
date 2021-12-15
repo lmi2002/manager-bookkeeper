@@ -153,4 +153,5 @@ function addInformInvoiceToInvoiceJournal(date_invoice, dict_invoice, obj_ss) {
   sheet_journal.getRange(last_row, 6).setValue(beznal)
   sheet_journal.getRange(last_row, 7).setValue(getStrNowDay_1())
   sheet_journal.getRange(last_row, 12).setValue(num_contract)
+  sheet_journal.getRange(last_row, 16).setValue(deleteSymForIDContragent(contragent))
 }

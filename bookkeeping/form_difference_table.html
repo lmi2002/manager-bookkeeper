@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      
+      #start_date, #finish_date {
+        width: 70%;
+      }
+
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 8px; /* Положение от правого края */
+       }
+   
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <? var data = getQtyContragentAndCodeSQL(); ?>
+    
+    <table width="100%" cellspacing="0" cellpadding="4" border="1">
+          
+      <? for (let list of data) { ?>
+        <tr>  
+          <? for (let value of list) { ?>
+            <td><?= value ?></td>
+          <? } ?>
+        </tr>   
+      <? } ?>
+    </table>
+
+    
+ 
+    
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Закрыть</button>
+    </p>
+    
+
+  </body>
+
+  <script>  
+   
+    window.closeDia = function() {
+      google.script.host.close()
+    };
+
+    </script>
+</html>

@@ -1,8 +1,3 @@
-// Не использовать! Использовать функцию getStrNowDay_1
-function getNowDate(){
-  return Utilities.formatDate(new Date(), "GMT", "dd.MM.yyyy")
-}
-
 function getStrNowDay() {
   return Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd")
 }
@@ -12,11 +7,6 @@ function getStrNowDay_1() {
 }
 
 function getStrDay(date) {
-  var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 )
-  return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
-}
-
-function getStrDay_1(date) {
   var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 )
   return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
 }

@@ -11,6 +11,17 @@ function getStrDay(date) {
   return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
 }
 
+function getStrDay_1(date) {
+  if (checkDateCorrectFormat(date)) {
+    var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
+  }
+  else {
+    var d = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2)
+  }
+  
+  return Utilities.formatDate(d, "GMT", "dd.MM.yyyy")
+}
+
 function addDays30() {
   var days_30 = getObjSpreadsheetApp().values_list[0][4]
 
@@ -54,6 +65,7 @@ function getFolders(folderName) {
 function exportSpreadsheetToXlsx(dict, type) {
   /* globals __SNIPPETS__TYPES__EXPORT__SHEET__ */
   const type_ = __SNIPPETS__TYPES__EXPORT__SHEET__[type];
+  Logger.log(dict['ss'])
   const url = Drive.Files.get(dict['ss'].getId()).exportLinks[type_];
   const blob = UrlFetchApp.fetch(url, {
     headers: {
@@ -134,4 +146,12 @@ function checkDateCorrectFormat(objDate) {
     correctFormat = false
   }
   return correctFormat
+}
+
+function openNewSpreadsheet(file) {
+  var spreadsheet_id = file.getId();
+  var url = "https://docs.google.com/spreadsheets/d/"+spreadsheet_id;
+  var html = "<script>window.open('" + url + "');google.script.host.close();</script>";
+  var user_interface = HtmlService.createHtmlOutput(html);
+    SpreadsheetApp.getUi().showModalDialog(user_interface, "Открыть таблицу");
 }

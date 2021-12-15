@@ -1,12 +1,25 @@
-function mostSQL(){
-  let startday = "'2021-05-01'"
-  let finishday = "'2021-05-05'"
-  let contragent_code = "432423423"
+function getInvoiceFromSheetJournalSQL(code, idContragent){
 
-  let targetRange = 'Журнал!A:K';
-  let SQL = "select E, D, F, J, K where B = " + contragent_code + " and (E >= DATE " +  startday + " and E <= DATE " +  finishday + ") and K is not null"
-  let Query = '=QUERY('+targetRange+';\"'+SQL+'\")'
-  return insertFormulaDataBase(Query) 
+  spreedsheet_bookkeeper.range = 'Журнал!A1:P'
+  let SQL
+  
+  if (code) {
+    SQL = "select * where Col2 = " + code + " or Col16 = " + "'" + idContragent + "' order by Col5 asc"
+  }
+  else {
+    SQL = "select * where Col16 = " + "'" + idContragent + "' order by Col5 asc"
+  }
+
+  let Query = 'QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\")'
+  return insertFormulaDataBase(Query)
+}
+
+function getInvoiceToSheetActOfReconciliationForPeriodSQL(startDate, finishDate){
+
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select * where Col5 >= DATE " +  "'" + startDate + "'" + " and Col5 <= DATE " +  "'" + finishDate + "' order by Col5 asc,Col4 asc,Col10 asc"
+  let Query = 'QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\")'
+  return insertFormulaDataBase(Query)
 }
 
 function getInvoiceForHTMLSQL() { 
@@ -30,4 +43,63 @@ function getInvoiceAggregatorSummSQL(numInvoice) {
     return list[1][0]
   }
   return 0
+}
+
+function getInvoicesPrevPeriodSummSQL(date){
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select count(Col4),sum(Col6) where Col5 < DATE " +  "'" + date + "'" + "group by Col4"
+  let SQL1 = "select Col2/Col1"
+  let SQL2 = "select sum(Col1)"
+  let Query = '=QUERY(QUERY(QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\");\"'+SQL1+'\"); \"'+SQL2+'\")'
+  let list = insertFormulaDataBase(Query)
+  if (list.length > 1) {
+    return list[1][0]
+  }
+  return 0
+}
+
+function getPaidInvoicesPrevPeriodSummSQL(date){
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select sum(Col11) where Col5 < DATE " +  "'" + date + "'"
+  let Query = 'QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\")'
+  let list = insertFormulaDataBase(Query)
+  if (list.length > 1) {
+    return list[1][0]
+  }
+  return 0
+}
+
+function getInvoicesPeriodSummSQL(startDate, finishDate){
+
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select count(Col4),sum(Col6) where Col5 >= DATE " +  "'" + startDate + "'" + " and Col5 <= DATE " +  "'" + finishDate + "'" + "group by Col4"
+  let SQL1 = "select Col2/Col1"
+  let SQL2 = "select sum(Col1)"
+  let Query = '=QUERY(QUERY(QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\");\"'+SQL1+'\"); \"'+SQL2+'\")'
+  let list = insertFormulaDataBase(Query)
+  if (list.length > 1) {
+    return list[1][0]
+  }
+  return 0
+}
+
+function getPaidInvoicesPeriodSummSQL(startDate, finishDate){
+
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select sum(Col11) where Col5 >= DATE " +  "'" + startDate + "'" + " and Col5 <= DATE " +  "'" + finishDate + "'"
+  let Query = 'QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '");\"'+SQL+'\")'
+  let list = insertFormulaDataBase(Query)
+  if (list.length > 1) {
+    return list[1][0]
+  }
+  return 0
+}
+
+
+function getQtyContragentAndCodeSQL() {
+
+  spreedsheet_bookkeeper.range = 'Акт сверки!A1:P'
+  let SQL = "select Col1, Col2, count(Col1) where Col1 is not null group by Col1, Col2 Label count(Col1) 'Кол-во строк'"
+  let Query = '=QUERY(IMPORTRANGE("' + spreedsheet_bookkeeper.id + '"; ' + '"' + spreedsheet_bookkeeper.range + '"); \"' +SQL+ '\")'
+  return insertFormulaDataBase(Query)
 }

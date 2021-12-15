@@ -12,17 +12,19 @@ function addPaymentInvoiceToBookkeeperJournal(list) {
     var lastRow = sheetJournal.getLastRow()
     for (var y = 0; y < list[i].length; y++) {
       sheetJournal.getRange(lastRow + 1, y + 1).setValue(list[i][y]).setBackground("#FFF2CC")
-    }  
+    }
+    sheetJournal.getRange(lastRow + 1, 16).setValue(deleteSymForIDContragent(list[0][0]))  
   }
+  
 }
 
-function addPaymentInvoiceToBookkeeperSheetPayment(list) {
+function addPaymentInvoiceToBookkeeperSheetPayment(list,totalSum) {
   let ss = SpreadsheetApp.openById(ID_BOOKKEEPER)
   let sheetPayment = ss.getSheetByName("Оплата")
   let firstElem = list[0]
   let lastRow = sheetPayment.getLastRow() + 1
   let lastColumn = sheetPayment.getLastColumn()
-  let = nal = Math.floor(Number(firstElem[5]) * 0.9091)
+  let = nal = Math.floor(Number(totalSum) * 0.9091)
 
   let listDate = list.map(function(el) {
     return el[9]
@@ -39,7 +41,7 @@ function addPaymentInvoiceToBookkeeperSheetPayment(list) {
 
   sheetPayment.getRange(lastRow, 1).setValue(firstElem[2])
   sheetPayment.getRange(lastRow, 2).setValue(nal)
-  sheetPayment.getRange(lastRow, 3).setValue(firstElem[5])
+  sheetPayment.getRange(lastRow, 3).setValue(totalSum)
   sheetPayment.getRange(lastRow, 4).setValue(maxDate)
   sheetPayment.getRange(lastRow, 5).setValue(firstElem[0])
   sheetPayment.getRange(lastRow, 11).setValue(firstElem[3])
@@ -113,4 +115,9 @@ function makePartialPaymentToSheetAvailable(listDataJournal) {
   else {     
     ui.alert("Не найден код бытовки " + listDataJournal[0][2] + " на листе Свободные!")
   }             
+}
+
+// Не изменять!!!
+function deleteSymForIDContragent(str) {
+  return str.replace(/[\s\"\'\-,.:;+<>«»\\\”\“]/g, "").toLowerCase();
 }

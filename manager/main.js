@@ -170,25 +170,25 @@ function writePaymentInvoiceToJouranl(obj) {
     let sum = getInvoiceAggregatorSummSQL(listData[0][3])
     let payment_sum = Number(obj.payment_sum)
     let payment_date = obj.payment_date
+    // let payment_sum = Number("500")
+    // let payment_date = "2021-12-14"
     let rangeInvoice = "Журнал!D1:D"
     let rangeSort = sheetActive.getRange(2,1, sheetActive.getLastRow(), lastColumn)
     let bool = true
-    // let numContract = getNumContractFromSheetAvailable(listData)
+    let totalSum = payment_sum + sum
   
     if (listData[0][10] == "") {
 
       sheetActive.getRange(numRow, 10).setValue(payment_date)
       sheetActive.getRange(numRow, 11).setValue(payment_sum)
-      // sheetActive.getRange(numRow, 12).setValue(numContract)
-    
-    
+      
       if (payment_sum  >= listData[0][5]) {
         sheetActive.getRange(numRow, 1, 1, lastColumn).setBackground("#FFF2CC")
         makePaymentToSheetAvailable(listData)
         let listFilterNumInvoice = getNumInvoiceFilterFromSheetJournalSQL(listData[0][3])
         addPaymentInvoiceToBookkeeperJournal(listFilterNumInvoice)
-        addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice)
-        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum) + "\n" + "Нажмите ОК для полной проводки этой оплаты.")
+        addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice, totalSum)
+        ui.alert(getMessageAboutPayment(payment_sum, listData[0][5], totalSum))
       }
       else {
         makePartialPaymentToSheetAvailable(listData)
@@ -197,7 +197,7 @@ function writePaymentInvoiceToJouranl(obj) {
     }  
     else {
 
-      if (payment_sum + sum >= listData[0][5]) {
+      if (totalSum >= listData[0][5]) {
 
         sheetActive.insertRows(numRow, 1)
         for (let i = 0;  i < listData[0].length; i++) {
@@ -237,8 +237,8 @@ function writePaymentInvoiceToJouranl(obj) {
         makePaymentToSheetAvailable(listData)
         let listFilterNumInvoice = getNumInvoiceFilterFromSheetJournalSQL(listData[0][3])
         addPaymentInvoiceToBookkeeperJournal(listFilterNumInvoice)
-        addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice)
-        ui.alert("Оплата счета на сумму " + payment_sum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (payment_sum + sum) + "\n" + "Нажмите ОК для полной проводки этой оплаты.")
+        addPaymentInvoiceToBookkeeperSheetPayment(listFilterNumInvoice, totalSum)
+        ui.alert(getMessageAboutPayment(payment_sum, listData[0][5], totalSum))
 
       }
       else {
@@ -248,7 +248,6 @@ function writePaymentInvoiceToJouranl(obj) {
         }
         sheetActive.getRange(numRow, 10).setValue(payment_date)
         sheetActive.getRange(numRow, 11).setValue(payment_sum)
-        // sheetActive.getRange(numRow, 12).setValue(numContract)
         makePartialPaymentToSheetAvailable(listData)
         ui.alert("Оплата счета прошла упешно. Счет оплачен частично.")
       }

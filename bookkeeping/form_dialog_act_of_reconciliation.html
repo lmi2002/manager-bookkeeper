@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      
+      #start_date, #finish_date {
+        width: 70%;
+      }
+
+      .layer1 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+       }
+      
+      .layer2 {
+        position: absolute; /* Абсолютное позиционирование */
+        bottom: 1px; /* Положение от нижнего края */
+        right: 8px; /* Положение от правого края */
+       }
+   
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <p><b>Контрагент:</b> &nbsp <span><b><?= getFirstNameCompany() ?></b></span></p>
+ 
+    <p>
+      <label for="start_date"><span>Начало периода:</span></label>
+      <input type="date" id="start_date">  
+    </p>
+
+    <p>
+      <label for="finish_date"><span>Конец периода:</span></label>
+      <input type="date" id="finish_date">  
+    </p>
+
+
+
+    <p class="layer1">  
+      <input id="execute" type="button" value=" Сформировать" style="width: 110px;">
+    </p>
+    
+    <p class="layer2">
+      <button onmouseup="closeDia()">Отмена</button>
+    </p>
+    
+
+  </body>
+
+  <script>
+ 
+    function executeDia() {
+      var nodelist = document.querySelectorAll('input')
+      var obj = {
+        "start_date": nodelist[0].value,
+        "finish_date": nodelist[1].value
+      }
+      google.script.run.ActOfReconciliation(obj)
+    }
+
+    function closeForm() {
+      setTimeout(function() {
+        google.script.host.close()
+      }, 1500)
+    }
+    
+    execute.onclick = function() {
+         executeDia()
+         closeForm()
+    }  
+   
+    window.closeDia = function() {
+      google.script.host.close()
+    };
+
+    </script>
+</html>

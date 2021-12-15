@@ -6,9 +6,28 @@ function onOpen() {
       [
         {name : "Провести оплату",functionName : "PromBox"},
         {name : "Выставить счет",functionName : "OpenFormDialog"},
-        {name : "Оплата Счета",functionName : "PaymentInvoiceToJouranl"}
+        {name : "Оплата Счета",functionName : "PaymentInvoiceToJouranl"},
+        {name : "Список для акта сверки",functionName : "ActOfReconciliationList"},
+        {name : "Сформировать акт сверки",functionName : "OpenFormDialogActOfReconciliationList"},
+        {name : "Вывод несоответствий",functionName : "OpenFormDialogFormDifferenceTable"},
+        {name : "Добавить AddIDContragen списком",functionName : "AddIDContragentIter"},
+
       ]
   sheet.addMenu("Скрипты", entries);
+}
+
+
+function onEdit() {
+  sheetName = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getName()
+  switch(sheetName) {
+    case "Оплата":
+      subtractPercentage()
+      break
+
+    case "Журнал":
+      addOrChangeIdContragentJournal()
+      break
+  }    
 }
 
 
@@ -89,11 +108,15 @@ function subtractPercentage() {
   }   
 }
 
-function onEdit() {
-  subtractPercentage()
+function addOrChangeIdContragentJournal() {
+  let ss = SpreadsheetApp.getActiveSpreadsheet()
+  let range = ss.getActiveRange()
+  let numCol = range.getColumn()
+  if (numCol == 1) {
+    let value = ss.getActiveSheet().getRange(range.getRow(), 1).getValue()
+    ss.getActiveSheet().getRange(range.getRow(), 16).setValue(deleteSymForIDContragent(value))
+  }  
 }
-
-
 
 function OpenFormDialog() {
   
@@ -345,3 +368,72 @@ function makePaymentToData(listDataJournal,paymentDate) {
   sh_oplata.getRange(rows_oplata + 1, 7,1).setValue(status)  
 }
 
+function ActOfReconciliationList() {
+  addListInvoiceToSheetActOfReconciliation()  
+}
+
+
+function OpenFormDialogActOfReconciliationList() {
+
+  if (SpreadsheetApp.getActiveSheet().getSheetName() == 'Акт сверки') { 
+
+    var t = HtmlService.createTemplateFromFile('form_dialog_act_of_reconciliation')
+      .evaluate()
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setWidth(300)
+      .setHeight(350)
+
+    SpreadsheetApp.getUi()
+      .showModalDialog(t, "Сформировать акт сверки по периоду") 
+  }
+  else {
+    SpreadsheetApp.getUi().alert('Перейдите на вкладку Акт сверки!')
+  }    
+}
+
+function OpenFormDialogFormDifferenceTable() {
+
+  if (SpreadsheetApp.getActiveSheet().getSheetName() == 'Акт сверки') { 
+
+    var dr = getQtyContragentAndCodeSQL()
+
+    var t = HtmlService.createTemplateFromFile('form_difference_table')
+      .evaluate()
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setWidth(400)
+      .setHeight(350)
+
+    SpreadsheetApp.getUi()
+      .showModalDialog(t, "Соответствие строк") 
+  }
+  else {
+    SpreadsheetApp.getUi().alert('Перейдите на вкладку Акт сверки!')
+  }    
+}
+
+// Установить IDContragent во вкладке Журнал(функция используеться раз)
+function AddIDContragentIter() {
+
+  let ss = SpreadsheetApp.getActiveSpreadsheet()
+  let activeSheet = ss.getActiveSheet()
+  if (activeSheet.getName() == 'Журнал') {
+    let ui = SpreadsheetApp.getUi()
+    let response = ui.alert("Добавить AddIDContragen списком ", ui.ButtonSet.YES_NO)
+            
+    // Добавляет данные в лист Акт сверки при нажатии кнопки ОК
+    if (response == ui.Button.YES){
+    
+      let lastRow = activeSheet.getLastRow()
+
+      for (let i = 2; i < lastRow + 1; i++) {
+        let value = activeSheet.getRange(i, 1).getValue()
+        let str = deleteSymForIDContragent(value)
+        activeSheet.getRange(i, 16).setValue(str)
+      }
+    }
+    SpreadsheetApp.getUi().alert('Добавление успешно завершилось!')
+  }
+  else {
+    SpreadsheetApp.getUi().alert('Перейдите на вкладку Журнал')
+  }
+}

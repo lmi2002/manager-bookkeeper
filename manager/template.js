@@ -8,7 +8,7 @@ function getLetterBody() {
 
 function getPersonLetterBody(comment, list) {
   let sum = Number(list[2]) * Number(list[7]) + Number(list[4])
-  let date = getStrDay_1(list[1])
+  let date = getStrDay(list[1])
   let commentHtml = "<p>" + comment + "</p>"
 
   if (comment) {
@@ -32,7 +32,7 @@ function getCompanyLetterBody(obj, list) {
   let comment = obj.comment
   let delivery = obj.delivery
   let sum = Number(list[3]) * Number(list[7]) + Number(list[5])
-  let date = getStrDay_1(list[1])
+  let date = getStrDay(list[1])
   let commentHtml = "<p></p>"
   let deliveryHtml = "<p></p>"
 
@@ -57,4 +57,19 @@ function getCompanyLetterBody(obj, list) {
         "<p>Дата доставки: " + date + "</p>" +
         "<br>" +
         "<p>Родион</p>"
+}
+
+function getMessageAboutPayment(paymentSum, sumInvoice, totalSum) {
+  let differenceAmount = totalSum - sumInvoice
+  let message = ""
+  if (differenceAmount > 0) {
+    message = "Оплата счета на сумму " + paymentSum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (totalSum) + "\n" +
+              "Переплата: " +  differenceAmount + " грн.\n" +
+              "Нажмите ОК для полной проводки этой оплаты."
+  }
+  else {
+    message = "Оплата счета на сумму " + paymentSum + " прошла упешно. Счет полность оплачен. Сумма по счету составляет " + (totalSum) + "\n" +
+              "Нажмите ОК для полной проводки этой оплаты."
+  }
+  return message
 }

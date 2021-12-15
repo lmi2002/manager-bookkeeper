@@ -9,3 +9,13 @@ function insertFormulaDataBase(query) {
   sheetSQL.getRange(1, 1).setFormula(query)
   return sheetSQL.getDataRange().getValues()
 }
+
+function insertTemporaryDataBaseActOfReconciliation(query, nameFile) {
+  // Создает новый файл
+  let createdSS = SpreadsheetApp.create(nameFile)
+
+  // Открывает файл в новой вкладке. 
+  openNewSpreadsheet(createdSS)
+  createdSS.getSheets()[0].getRange(1, 1).setFormula(query)
+  return createdSS.getDataRange().getValues()
+}

@@ -62,8 +62,7 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
     sh_ss_copy_act.getRange('J10').setValue(sum_contract)
     sh_ss_copy_act.getRange('A12').setValue("Ціна робіт (послуг) складає " + sd.toLocaleString() + ",00 грн")
     sh_ss_copy_act.getRange('A14').setValue("Разом " + sd.toLocaleString() + ",00 (" + NumberInWords(sum_contract) + ") без ПДВ")
-    sh_ss_copy_act.getRange('G19').setValue(contragent)
-    sh_ss_copy_act.getRange('G20').setValue(contragentDetails)
+    sh_ss_copy_act.getRange('G19').setValue(contragentDetails)
   }
   else {
     sh_ss_copy_act.hideRow(sh_ss_copy_act.getRange('A9:Z9'))
@@ -71,8 +70,7 @@ function copyActFile(date_invoice, date_act, status_period, status_delivery, obj
     sh_ss_copy_act.getRange('J9').setValue(sum_contract)
     sh_ss_copy_act.getRange('A12').setValue("Ціна робіт (послуг) складає " + sd.toLocaleString() + ",00 грн")
     sh_ss_copy_act.getRange('A14').setValue("Разом " + sd.toLocaleString() + ",00 (" + NumberInWords(sum_contract) + ") без ПДВ")
-    sh_ss_copy_act.getRange('G19').setValue(contragent)
-    sh_ss_copy_act.getRange('G20').setValue(contragentDetails)
+    sh_ss_copy_act.getRange('G19').setValue(contragentDetails)
   }
     
   SpreadsheetApp.flush()

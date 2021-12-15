@@ -1,14 +1,3 @@
-function mostSQL(){
-  let startday = "'2021-05-01'"
-  let finishday = "'2021-05-05'"
-  let contragent_code = "432423423"
-
-  let targetRange = 'Журнал!A:K';
-  let SQL = "select E, D, F, J, K where B = " + contragent_code + " and (E >= DATE " +  startday + " and E <= DATE " +  finishday + ") and K is not null"
-  let Query = '=QUERY('+targetRange+';\"'+SQL+'\")'
-  return insertFormulaDataBase(Query) 
-}
-
 function getInvoiceForHTMLSQL() { 
   let SQL = "select Col4, Col5, Col6, Col10, Col11 where Col4 like upper ('%" + globalNumInvoiceFromPromt + "%') order by Col4, Col5 asc"
   let Query = '=QUERY(IMPORTRANGE("' + activeSpreedsheet.id + '"; ' + '"' + activeSpreedsheet.range + '"); \"' +SQL+ '\")'
